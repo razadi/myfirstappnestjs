@@ -1,5 +1,5 @@
 import { User } from './../../../core/interfaces/user.interface';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UserService } from '../../../core/services/user/user.service';
 import { CreateUserDto } from '../../../core/dto/create.user.dto';
 import { UserEntity } from '../../../core/entities/user.entity';
@@ -22,8 +22,21 @@ export class UserController {
   }
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
-    return this.userService.save(createUserDto);
+  async create(@Body() user: CreateUserDto): Promise<UserEntity> {
+    return this.userService.save(user);
+  }
+
+  @Put(':id')
+  async editContact(
+    @Param('id') id,
+    @Body() user: CreateUserDto,
+  ): Promise<UserEntity> {
+    return this.userService.edit(id, user);
+  }
+
+  @Delete(':id')
+  async deleteContact(@Param('id') id): Promise<boolean> {
+    return this.userService.delete(id);
   }
 
 }
